@@ -30,3 +30,35 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio cache/options directory
+.vs/
+x64/
+
+# JetBrains cache directory
+.idea/
+
+# Visual Studio files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sdf
+*.opensdf
+*.opendb
+*.vcxproj
+*.vcxproj.filters
+*.recipe
+*.pdb
+*.ilk
+*.idx
+*.stash
+*.cbt
+*.props
+*.natvis
+*.vcxproj.FileListAbsolute.txt
+
+# Log files
+*.log
+*.tlog

@@ -1,14 +1,21 @@
-#ifndef IN_OUT
-#define IN_OUT
+#ifndef __IN_OUT__
+#define __IN_OUT__
 
 #include "model.h"
+#include "errors.h"
 
 /**
  * \brief Load model from file
  *
  * \param filename
  * \return
- **/
-model_t *LoadModel(const char* filename);
+ */
+errors LoadModel(model_t& model, const char *filename);
+/**
+ * \brief Print error message
+ *
+ * \param err
+ */
+void PrintErrorMessage(const errors& err);
 
-#endif // IN_OUT
+#endif // __IN_OUT__

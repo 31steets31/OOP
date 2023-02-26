@@ -1,6 +1,6 @@
-#ifndef DEFINES
-#define DEFINES
+#ifndef __DEFINES__
+#define __DEFINES__
 
 #define MAX_STR_LEN 256
 
-#endif // DEFINES
+#endif // __DEFINES__

@@ -2,7 +2,9 @@
 #define __MAINWINDOW__
 
 #include <QMainWindow>
+
 #include "ui_MainWindow.h"
+#include "errors.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +20,7 @@ public:
 
 private slots:
     void on_LoadFigureButton_clicked();
+    errors DrawModel(void);
 
 private:
     Ui::MainWindow *ui;

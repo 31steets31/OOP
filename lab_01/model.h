@@ -1,14 +1,17 @@
 #ifndef __MODEL_FUNCTIONS_AND_TYPES__
 #define __MODEL_FUNCTIONS_AND_TYPES__
 
+#include "errors.h"
+#include "paint.h"
+
 /**
  * \brief Type for storing vertex coordinates
  */
 typedef struct
 {
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 } vertex_t;
 
 /**
@@ -18,13 +21,12 @@ typedef struct
 {
     int a;
     int b;
-    int c;
 } face_t;
 
 /**
  * \brief Type for storing model
  */
-typedef struct model_t
+typedef struct
 {
     int n_vertices;
     int n_faces;
@@ -39,13 +41,21 @@ typedef struct model_t
  * \return
  */
 model_t &InitModel(void);
-
+/**
+ * \brief Draw model
+ *
+ * \param model
+ * \param canvas
+ * \return
+ */
+errors DrawModel(const model_t& model, canvas_t& canvas);
 /**
  * \brief Free model
  *
  * \param filename
  * \return
  */
-void FreeModel(model_t &model);
+void FreeModel(model_t& model);
+
 
 #endif // __MODEL_FUNCTIONS_AND_TYPES__

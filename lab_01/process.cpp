@@ -1,6 +1,6 @@
 #include "model.h"
 #include "errors.h"
-#include "task_manager.h"
+#include "process.h"
 #include "in_out.h"
 
 /**
@@ -20,6 +20,11 @@ errors Process(options_t &opt)
 		case LOAD_MODEL:
 		{
 			rc = LoadModel(model, opt.params.filename);
+			break;
+		}
+		case DRAW_MODEL:
+		{
+			rc = DrawModel(model, opt.params.canvas);
 			break;
 		}
 		case DESTROY_MODEL:

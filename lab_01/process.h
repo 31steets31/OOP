@@ -1,10 +1,14 @@
-#ifndef __TASK_MANAGER__
-#define __TASK_MANAGER__
+#ifndef __PROCESS__
+#define __PROCESS__
+
+#include "paint.h"
+#include "defines.h"
 
 enum actions
 {
 	LOAD_MODEL,
 	DESTROY_MODEL,
+	DRAW_MODEL,
 };
 
 typedef struct
@@ -12,7 +16,8 @@ typedef struct
 	actions action;
 	union
 	{
-		const char *filename;
+		char filename[MAX_FILENAME_LEN + 1];
+		canvas_t canvas;
 	} params;
 } options_t;
 
@@ -24,6 +29,6 @@ typedef struct
  */
 errors Process(options_t& opt);
 
-#endif // !__TASK_MANAGER__
+#endif // __PROCESS__
 
 

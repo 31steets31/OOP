@@ -3,8 +3,8 @@
 #include "in_out.h"
 #include "model.h"
 #include "errors.h"
-#include "task_manager.h"
-#include "tools.h"
+#include "process.h"
+#include "paint.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -21,6 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // Setup the UI object
     ui->setupUi(this);
+
+    // Create new canvas
+    QGraphicsScene *canvas = new QGraphicsScene(this);
+
+    ui->graphicsView->setScene(canvas);
+    ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+    canvas->setSceneRect(0, 0, 1, 1);
 }
 
 /**
@@ -30,13 +38,36 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow(void)
 {
     // Free the model
-    options_t opt = { DESTROY_MODEL, { NULL } };
+    options_t opt;
+    opt.action = DESTROY_MODEL;
 
     int rc = Process(opt);
 
     // Delete the UI object
     delete ui;
 
+}
+
+/**
+ * \brief Draw model
+ * 
+ * \return 
+ **/
+errors MainWindow::DrawModel(void)
+{
+    // Create canvas
+    canvas_t canvas;
+
+    canvas.canvas = ui->graphicsView->scene();
+
+    // Set options
+    options_t opt;
+
+    opt.action = DRAW_MODEL;
+    opt.params.canvas = canvas;
+
+    // Draw model
+    return Process(opt);
 }
 
 /**
@@ -58,12 +89,24 @@ void MainWindow::on_LoadFigureButton_clicked(void)
         return;
 
     // Create options object
-    options_t opt = { LOAD_MODEL, { ConvertQString(filename) } };
+    options_t opt;
+    opt.action = LOAD_MODEL;
+    strcpy(opt.params.filename, filename.toStdString().c_str());
 
     // Load model from file
     errors rc = Process(opt);
 
     // If model was not loaded, show error message
     if (rc != ERR_SUCCESS)
+    {
         PrintErrorMessage(rc);
+        return;
+    }
+
+    // Draw model
+    rc = DrawModel();
+
+    // If model was not drawn, show error message
+    if (rc != ERR_SUCCESS)
+		PrintErrorMessage(rc);
 }

@@ -52,7 +52,7 @@ errors LoadModel(model_t &model, const char *filename)
     {
         if (line[0] == 'v')
         {
-            rc = sscanf(line, "v %f %f %f",
+            rc = sscanf(line, "v %lf %lf %lf",
                    &(model.vertices[i].x),
                    &(model.vertices[i].y),
                    &(model.vertices[i].z));
@@ -68,12 +68,11 @@ errors LoadModel(model_t &model, const char *filename)
         }
         else if (line[0] == 'f')
         {
-            rc = sscanf(line, "f %d %d %d",
+            rc = sscanf(line, "f %d %d",
                    &(model.faces[j].a),
-                   &(model.faces[j].b),
-                   &(model.faces[j].c));
+                   &(model.faces[j].b));
 
-            if (rc != 3)
+            if (rc != 2)
             {
                 FreeModel(model);
                 fclose(file);

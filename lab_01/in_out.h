@@ -5,6 +5,14 @@
 #include "errors.h"
 
 /**
+ * \brief Get vertices and faces count
+ *
+ * \param file
+ * \param vertices
+ * \param faces
+ */
+void GetCount(FILE* file, int& vertices, int& faces);
+/**
  * \brief Load model from file
  *
  * \param filename

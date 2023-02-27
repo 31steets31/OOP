@@ -7,6 +7,100 @@
 #include "errors.h"
 
 /**
+ * \brief Get vertices and faces count
+ * 
+ * \param file
+ * \param vertices
+ * \param faces
+ */
+void GetCount(FILE *file, int& vertices, int& faces)
+{
+    // Set buffer
+    char line[MAX_STR_LEN + 1];
+    memset(line, 0, MAX_STR_LEN + 1);
+
+    // Calculate count
+    while (fgets(line, MAX_STR_LEN + 1, file) != NULL)
+    {
+        if (line[0] == 'v')
+            ++vertices;
+        else if (line[0] == 'f')
+            ++faces;
+    }
+
+    rewind(file);
+}
+
+/**
+ * \brief Get vertices from line
+ * 
+ * \param line
+ * \param vertex
+ * \return 
+ */
+int GetVertexFromLine(const char *line, vertex_t &vertex)
+{
+    return sscanf(line, "v %lf %lf %lf",
+        &(vertex.x),
+        &(vertex.y),
+        &(vertex.z));
+}
+
+/**
+ * \brief Get faces from line
+ * 
+ * \param line
+ * \param face
+ * \return 
+ */
+int GetFacesFromLine(const char* line, face_t& face)
+{
+    return sscanf(line, "f %d %d",
+        &(face.a),
+        &(face.b));
+}
+
+/**
+ * \brief Read model from file
+ * 
+ * \param file
+ * \param vertexes
+ * \param faces
+ * \return 
+ */
+errors ReadModel(FILE *file, vertexes_t &vertexes, faces_t &faces)
+{
+    // Set buffer
+    char line[MAX_STR_LEN + 1];
+    memset(line, 0, MAX_STR_LEN + 1);
+
+    // Read data
+    int r_count;
+
+    for (int i = 0, j = 0; fgets(line, MAX_STR_LEN + 1, file) != NULL; )
+    {
+        if (line[0] == 'v')
+        {
+            r_count = GetVertexFromLine(line, vertexes.points[i]);
+
+            if (r_count != 3)
+                return ERR_READING_FILE;
+
+            ++i;
+        }
+        else if (line[0] == 'f')
+        {
+            r_count = GetFacesFromLine(line, faces.arr[j]);
+
+            if (r_count != 2)
+                return ERR_READING_FILE;
+
+            ++j;
+        }
+    }
+}
+
+/**
  * \brief Load model from file
  * 
  * \param filename
@@ -15,6 +109,9 @@
  */
 errors LoadModel(model_t &model, const char *filename)
 {
+    // Return code
+    errors rc = ERR_SUCCESS;
+
     // Read file
     FILE *file = fopen(filename, "r");
     if (!file)
@@ -23,70 +120,28 @@ errors LoadModel(model_t &model, const char *filename)
         return ERR_OPEN_FILE;
     }
 
+    // Get vertices and faces count
     int n_vertices = 0;
     int n_faces = 0;
 
-    char line[MAX_STR_LEN + 1];
-    memset(line, 0, MAX_STR_LEN + 1);
-
-    while (fgets(line, MAX_STR_LEN + 1, file) != NULL)
-    {
-        if (line[0] == 'v')
-            ++n_vertices;
-        else if (line[0] == 'f')
-            ++n_faces;
-    }
+    GetCount(file, n_vertices, n_faces);
 
     // Allocate memory for vertices and faces
-    model.n_vertices = n_vertices;
-    model.n_faces = n_faces;
-    model.vertices = (vertex_t *) malloc(sizeof(vertex_t) * n_vertices);
-    model.faces = (face_t *) malloc(sizeof(face_t) * n_faces);
-
-    rewind(file);
-
-    int i = 0, j = 0;
-    int rc;
+    AllocateVertices(model.vertices, n_vertices);
+    AllocateFaces(model.faces, n_faces);
 
     // Read vertices and faces
-    while (fgets(line, 128, file) != NULL)
+    rc = ReadModel(file, model.vertices, model.faces);
+    if (rc != ERR_SUCCESS)
     {
-        if (line[0] == 'v')
-        {
-            rc = sscanf(line, "v %lf %lf %lf",
-                   &(model.vertices[i].x),
-                   &(model.vertices[i].y),
-                   &(model.vertices[i].z));
-
-            if (rc != 3)
-            {
-				FreeModel(model);
-                fclose(file);
-				return ERR_READING_FILE;
-			}
-
-            ++i;
-        }
-        else if (line[0] == 'f')
-        {
-            rc = sscanf(line, "f %d %d",
-                   &(model.faces[j].a),
-                   &(model.faces[j].b));
-
-            if (rc != 2)
-            {
-                FreeModel(model);
-                fclose(file);
-                return ERR_READING_FILE;
-            }
-
-            ++j;
-        }
+        fclose(file);
+        FreeModel(model);
+        return rc;
     }
 
     fclose(file);
     
-    return ERR_SUCCESS;
+    return rc;
 }
 
 /**

@@ -7,140 +7,115 @@
 #include "errors.h"
 
 /**
- * \brief Get vertices and faces count
+ * \brief Read vertices and faces count
  * 
  * \param file
- * \param vertices
- * \param faces
- */
-void GetCount(FILE *file, int& vertices, int& faces)
-{
-    // Set buffer
-    char line[MAX_STR_LEN + 1];
-    memset(line, 0, MAX_STR_LEN + 1);
-
-    // Calculate count
-    while (fgets(line, MAX_STR_LEN + 1, file) != NULL)
-    {
-        if (line[0] == 'v')
-            ++vertices;
-        else if (line[0] == 'f')
-            ++faces;
-    }
-
-    rewind(file);
-}
-
-/**
- * \brief Get vertices from line
- * 
- * \param line
- * \param vertex
+ * \param vertices_count
+ * \param faces_count
  * \return 
  */
-int GetVertexFromLine(const char *line, vertex_t &vertex)
-{
-    return sscanf(line, "v %lf %lf %lf",
-        &(vertex.x),
-        &(vertex.y),
-        &(vertex.z));
-}
-
-/**
- * \brief Get faces from line
- * 
- * \param line
- * \param face
- * \return 
- */
-int GetFacesFromLine(const char* line, face_t& face)
-{
-    return sscanf(line, "f %d %d",
-        &(face.a),
-        &(face.b));
-}
-
-/**
- * \brief Read model from file
- * 
- * \param file
- * \param vertexes
- * \param faces
- * \return 
- */
-errors ReadModel(FILE *file, vertexes_t &vertexes, faces_t &faces)
-{
-    // Set buffer
-    char line[MAX_STR_LEN + 1];
-    memset(line, 0, MAX_STR_LEN + 1);
-
-    // Read data
-    int r_count;
-
-    for (int i = 0, j = 0; fgets(line, MAX_STR_LEN + 1, file) != NULL; )
-    {
-        if (line[0] == 'v')
-        {
-            r_count = GetVertexFromLine(line, vertexes.points[i]);
-
-            if (r_count != 3)
-                return ERR_READING_FILE;
-
-            ++i;
-        }
-        else if (line[0] == 'f')
-        {
-            r_count = GetFacesFromLine(line, faces.arr[j]);
-
-            if (r_count != 2)
-                return ERR_READING_FILE;
-
-            ++j;
-        }
-    }
-}
-
-/**
- * \brief Load model from file
- * 
- * \param filename
- * \param model
- * \return 
- */
-errors LoadModel(model_t &model, const char *filename)
+errors ReadCounts(FILE* file, int& vertices_count, int& faces_count)
 {
     // Return code
     errors rc = ERR_SUCCESS;
 
-    // Read file
-    FILE *file = fopen(filename, "r");
-    if (!file)
+    // Read counts
+    int read_count = fscanf(file, "v: %d; f: %d", &vertices_count, &faces_count);
+
+    if (read_count != 2)
+        rc = ERR_GET_COUNTS;
+
+    return rc;
+}
+
+/**
+ * \brief Read one vertex
+ * 
+ * \param file
+ * \param vertex
+ * \return 
+ */
+errors ReadVertex(FILE* file, point_t& vertex)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    // Read point
+    int read_count = fscanf(file, "%lf %lf %lf",
+        &(vertex.x),
+        &(vertex.y),
+        &(vertex.z));
+
+    if (read_count != 3)
+        rc = ERR_READING_FILE;
+
+    return rc;
+}
+
+/**
+ * \brief Read one face
+ *
+ * \param file
+ * \param face
+ * \return
+ */
+errors ReadFace(FILE* file, face_t& face)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    // Read point
+    int read_count = fscanf(file, "%d %d",
+        &(face.a),
+        &(face.b));
+
+    if (read_count != 2)
+        rc = ERR_READING_FILE;
+
+    return rc;
+}
+
+/**
+ * \brief Read model data
+ * 
+ * \param file
+ * \param vertices
+ * \param faces
+ * \return 
+ */
+errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    // Read data
+    char type;
+
+    int i = 0, j = 0;
+
+    while (feof(file) == 0 &&
+        i < vertices.n_vertices &&
+        j < faces.n_faces)
     {
-        FreeModel(model);
-        return ERR_OPEN_FILE;
+        // Get type of data in line
+        type = getc(file);
+
+        if (type == 'v')
+            rc = ReadVertex(file, vertices.points[i++]);
+        else if (type == 'f')
+            rc = ReadFace(file, faces.arr[j++]);
+        else
+            rc = ERR_READING_FILE;
+
+        if (rc != ERR_SUCCESS)
+            break;
     }
 
-    // Get vertices and faces count
-    int n_vertices = 0;
-    int n_faces = 0;
+    if (rc == ERR_SUCCESS &&
+        (vertices.n_vertices != i || faces.n_faces != j ||
+            feof(file) == 0))
+        rc = ERR_READING_FILE;
 
-    GetCount(file, n_vertices, n_faces);
-
-    // Allocate memory for vertices and faces
-    AllocateVertices(model.vertices, n_vertices);
-    AllocateFaces(model.faces, n_faces);
-
-    // Read vertices and faces
-    rc = ReadModel(file, model.vertices, model.faces);
-    if (rc != ERR_SUCCESS)
-    {
-        fclose(file);
-        FreeModel(model);
-        return rc;
-    }
-
-    fclose(file);
-    
     return rc;
 }
 
@@ -181,6 +156,11 @@ void PrintErrorMessage(const errors &err)
 			QMessageBox::critical(NULL, "Error", "Can't open file");
 			break;
 		}
+        case ERR_GET_COUNTS:
+        {
+            QMessageBox::critical(NULL, "Error", "Can't read file");
+            break;
+        }
 		case ERR_READING_FILE:
         {
             QMessageBox::critical(NULL, "Error", "Can't read file");
@@ -212,6 +192,9 @@ void PrintErrorMessage(const errors &err)
             break;
         }
         default:
+        {
+            QMessageBox::critical(NULL, "Error", "Unknown error");
             break;
+        }
     }
 }

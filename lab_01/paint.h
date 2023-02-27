@@ -4,13 +4,17 @@
 #include <QGraphicsScene>
 
 #include "model.h"
+#include "point.h"
+#include "paint.h"
+#include "vertices.h"
+#include "faces.h"
 
 /**
  * \brief Canvas
  */
 struct canvas_t
 {
-	QGraphicsScene *canvas;
+	QGraphicsScene* canvas;
 };
 
 /**
@@ -27,14 +31,14 @@ void ClearCanvas(canvas_t& canvas);
  * \param a
  * \param b
  */
-void AddLine(const canvas_t& canvas, const vertex_t& a, const vertex_t& b);
+void AddLine(const canvas_t& canvas, const point_t& a, const point_t& b);
 /**
  * \brief Draw lines on canvas
  *
  * \param canvas
- * \param a
- * \param b
+ * \param vertexes
+ * \param faces
  */
-void AddLines(const canvas_t& canvas, vertexes_t& vertexes, faces_t& faces);
+void AddLines(const canvas_t& canvas, vertices_t& vertexes, faces_t& faces);
 
 #endif // __PAINT__

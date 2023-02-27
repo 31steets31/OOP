@@ -19,27 +19,27 @@ errors Process(options_t &opt)
 	{
 		case LOAD_MODEL:
 		{
-			rc = LoadModel(model, opt.params.filename);
+			rc = LoadModel(model, opt.filename);
 			break;
 		}
 		case DRAW_MODEL:
 		{
-			rc = DrawModel(model, opt.params.canvas);
+			rc = DrawModel(model, opt.canvas);
 			break;
 		}
 		case TRANSFER_MODEL:
 		{
-			rc = TransferModel(model, opt.params.t_coord);
+			rc = TransferModel(model, opt.t_coord);
 			break;
 		}
 		case ROTATE_MODEL:
 		{
-			rc = RotateModel(model, opt.params.r_angles);
+			rc = RotateModel(model, opt.r_angles);
 			break;
 		}
 		case SCALE_MODEL:
 		{
-			rc = ScaleModel(model, opt.params.s_coeff);
+			rc = ScaleModel(model, opt.s_coeff);
 			break;
 		}
 		case DESTROY_MODEL:

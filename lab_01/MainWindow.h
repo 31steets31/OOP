@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-    errors DrawModel(void);
+    errors DrawModelOnCanvas(void);
     void on_LoadFigureButton_clicked(void);
     void on_TransferButton_clicked(void);
     void on_ScaleButton_clicked(void);

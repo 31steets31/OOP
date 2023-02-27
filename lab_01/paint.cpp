@@ -20,7 +20,7 @@ void ClearCanvas(canvas_t& canvas)
  * \param a
  * \param b
  */
-void AddLine(const canvas_t& canvas, const vertex_t& a, const vertex_t& b)
+void AddLine(const canvas_t& canvas, const point_t& a, const point_t& b)
 {
 	canvas.canvas->addLine(
 		a.x + CANVAS_WIDTH / 2, -a.y + CANVAS_HEIGHT / 2,
@@ -32,10 +32,10 @@ void AddLine(const canvas_t& canvas, const vertex_t& a, const vertex_t& b)
  * \brief Draw lines on canvas
  * 
  * \param canvas
- * \param a
- * \param b
+ * \param vertexes
+ * \param faces
  */
-void AddLines(const canvas_t &canvas, vertexes_t &vertexes, faces_t &faces)
+void AddLines(const canvas_t &canvas, vertices_t &vertexes, faces_t &faces)
 {
 	for (int i = 0; i < faces.n_faces; ++i)
 	{
@@ -43,8 +43,8 @@ void AddLines(const canvas_t &canvas, vertexes_t &vertexes, faces_t &faces)
 		face_t face = faces.arr[i];
 
 		// Get vertexes
-		vertex_t& a = vertexes.points[face.a];
-		vertex_t& b = vertexes.points[face.b];
+		point_t& a = vertexes.points[face.a];
+		point_t& b = vertexes.points[face.b];
 
 		// Draw line on canvas
 		AddLine(canvas, a, b);

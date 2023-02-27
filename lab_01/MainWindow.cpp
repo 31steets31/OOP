@@ -49,11 +49,11 @@ MainWindow::~MainWindow(void)
 }
 
 /**
- * \brief Draw model
+ * \brief Draw model on canvas
  * 
  * \return 
  **/
-errors MainWindow::DrawModel(void)
+errors MainWindow::DrawModelOnCanvas(void)
 {
     // Create canvas
     canvas_t canvas;
@@ -64,7 +64,7 @@ errors MainWindow::DrawModel(void)
     options_t opt;
 
     opt.action = DRAW_MODEL;
-    opt.params.canvas = canvas;
+    opt.canvas = canvas;
 
     // Draw model
     return Process(opt);
@@ -92,7 +92,7 @@ void MainWindow::on_LoadFigureButton_clicked(void)
     options_t opt;
 
     opt.action = LOAD_MODEL;
-    strcpy(opt.params.filename, filename.toStdString().c_str());
+    strcpy(opt.filename, filename.toStdString().c_str());
 
     // Load model from file
     errors rc = Process(opt);
@@ -105,7 +105,7 @@ void MainWindow::on_LoadFigureButton_clicked(void)
     }
 
     // Draw model
-    rc = DrawModel();
+    rc = DrawModelOnCanvas();
 
     // If model was not drawn, show error message
     if (rc != ERR_SUCCESS)
@@ -142,7 +142,7 @@ void MainWindow::on_TransferButton_clicked(void)
     options_t opt;
 
     opt.action = TRANSFER_MODEL;
-    opt.params.t_coord = { 
+    opt.t_coord = { 
         (check_dx) ? dx : 0, 
         (check_dy) ? dy : 0,
         (check_dz) ? dz : 0
@@ -159,7 +159,7 @@ void MainWindow::on_TransferButton_clicked(void)
     }
 
     // Draw model
-    rc = DrawModel();
+    rc = DrawModelOnCanvas();
 
     // If model was not drawn, show error message
     if (rc != ERR_SUCCESS)
@@ -216,7 +216,7 @@ void MainWindow::on_RotateButton_clicked(void)
 	options_t opt;
 
 	opt.action = ROTATE_MODEL;
-    opt.params.r_angles = {
+    opt.r_angles = {
         x,
         y,
         z,
@@ -236,7 +236,7 @@ void MainWindow::on_RotateButton_clicked(void)
 	}
 
 	// Draw model
-	rc = DrawModel();
+	rc = DrawModelOnCanvas();
 
 	// If model was not drawn, show error message
 	if (rc != ERR_SUCCESS)
@@ -293,7 +293,7 @@ void MainWindow::on_ScaleButton_clicked(void)
 	options_t opt;
 
 	opt.action = SCALE_MODEL;
-    opt.params.s_coeff = {
+    opt.s_coeff = {
         x,
 		y,
 		z,
@@ -313,7 +313,7 @@ void MainWindow::on_ScaleButton_clicked(void)
 	}
 
 	// Draw model
-	rc = DrawModel();
+	rc = DrawModelOnCanvas();
 
 	// If model was not drawn, show error message
 	if (rc != ERR_SUCCESS)

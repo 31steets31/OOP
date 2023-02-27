@@ -1,8 +1,10 @@
 #ifndef __PROCESS__
 #define __PROCESS__
 
+#include "errors.h"
 #include "paint.h"
 #include "defines.h"
+#include "process.h"
 
 /**
  * \brief Allowed actions
@@ -58,7 +60,7 @@ struct scale_t
 /**
  * \brief Options for processing
  */
-typedef struct
+struct options_t
 {
 	actions action;
 	union
@@ -68,8 +70,8 @@ typedef struct
 		transfer_t t_coord;
 		rotate_t r_angles;
 		scale_t s_coeff;
-	} params;
-} options_t;
+	};
+};
 
 /**
  * \brief Process command

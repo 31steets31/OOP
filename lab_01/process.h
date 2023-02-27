@@ -38,9 +38,9 @@ struct scale_t
 	double y_center;
 	double z_center;
 
-	double x_coeff;
-	double y_coeff;
-	double z_coeff;
+	double kx;
+	double ky;
+	double kz;
 };
 
 typedef struct

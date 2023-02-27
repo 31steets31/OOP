@@ -117,6 +117,26 @@ errors RotateModel(model_t& model, const rotate_t& r_angles)
 }
 
 /**
+ * \brief Scale model
+ * 
+ * \param model
+ * \param s_coeff
+ * \return 
+ */
+errors ScaleModel(model_t& model, const scale_t& s_coeff)
+{
+	for (int i = 0; i < model.n_vertices; ++i)
+	{
+		// Scale coordinates around center point s_coeff.x_center, s_coeff.y_center, s_coeff.z_center
+		model.vertices[i].x = s_coeff.x_center + (model.vertices[i].x - s_coeff.x_center) * s_coeff.kx;
+		model.vertices[i].y = s_coeff.y_center + (model.vertices[i].y - s_coeff.y_center) * s_coeff.ky;
+		model.vertices[i].z = s_coeff.z_center + (model.vertices[i].z - s_coeff.z_center) * s_coeff.kz;
+	}
+
+	return ERR_SUCCESS;
+}
+
+/**
  * \brief Free model
  *
  * \param model

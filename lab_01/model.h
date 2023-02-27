@@ -67,6 +67,14 @@ errors TransferModel(model_t& model, const transfer_t& t_coord);
  */
 errors RotateModel(model_t& model, const rotate_t& r_angles);
 /**
+ * \brief Scale model
+ *
+ * \param model
+ * \param s_coeff
+ * \return
+ */
+errors ScaleModel(model_t& model, const scale_t& s_coeff);
+/**
  * \brief Free model
  *
  * \param filename

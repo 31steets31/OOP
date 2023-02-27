@@ -88,8 +88,9 @@ void MainWindow::on_LoadFigureButton_clicked(void)
     if (filename.isEmpty())
         return;
 
-    // Create options object
+    // Set options
     options_t opt;
+
     opt.action = LOAD_MODEL;
     strcpy(opt.params.filename, filename.toStdString().c_str());
 
@@ -137,8 +138,9 @@ void MainWindow::on_TransferButton_clicked(void)
 		return;
 	}
 
-    // Create options object
+    // Set options
     options_t opt;
+
     opt.action = TRANSFER_MODEL;
     opt.params.t_coord = { 
         (check_dx) ? dx : 0, 
@@ -227,6 +229,83 @@ void MainWindow::on_RotateButton_clicked(void)
 	errors rc = Process(opt);
 
 	// If model was not rotated, show error message
+    if (rc != ERR_SUCCESS)
+    {
+		PrintErrorMessage(rc);
+		return;
+	}
+
+	// Draw model
+	rc = DrawModel();
+
+	// If model was not drawn, show error message
+	if (rc != ERR_SUCCESS)
+		PrintErrorMessage(rc);
+}
+
+/**
+ * \brief Scale model by coefficients
+ *
+ */
+void MainWindow::on_ScaleButton_clicked(void)
+{
+    // Get center of scaling (string)
+    QString s_x = ui->CenterXField->toPlainText();
+    QString s_y = ui->CenterYField->toPlainText();
+    QString s_z = ui->CenterZField->toPlainText();
+
+    // Check if coordinates are valid
+    bool check_x, check_y, check_z;
+
+    double x = s_x.toDouble(&check_x);
+    double y = s_y.toDouble(&check_y);
+    double z = s_z.toDouble(&check_z);
+
+    if (!check_x || !check_y || !check_z)
+    {
+        errors err = ERR_INCORRECT_CENTER;
+
+        PrintErrorMessage(err);
+        return;
+    }
+
+	// Get scale coefficients (string)
+	QString s_kx = ui->ScaleXField->toPlainText();
+	QString s_ky = ui->ScaleYField->toPlainText();
+	QString s_kz = ui->ScaleZField->toPlainText();
+
+	// Check if coefficients are valid
+	bool check_kx, check_ky, check_kz;
+
+	double kx = s_kx.toDouble(&check_kx);
+	double ky = s_ky.toDouble(&check_ky);
+	double kz = s_kz.toDouble(&check_kz);
+
+    if (!check_kx && !check_ky && !check_kz)
+    {
+		errors err = ERR_INCORRECT_COEFFICIENTS;
+
+		PrintErrorMessage(err);
+		return;
+	}
+
+	// Set options
+	options_t opt;
+
+	opt.action = SCALE_MODEL;
+    opt.params.s_coeff = {
+        x,
+		y,
+		z,
+		(check_kx) ? kx : 1,
+		(check_ky) ? ky : 1,
+		(check_kz) ? kz : 1
+	};
+
+	// Scale model
+	errors rc = Process(opt);
+
+	// If model was not scaled, show error message
     if (rc != ERR_SUCCESS)
     {
 		PrintErrorMessage(rc);

@@ -37,6 +37,11 @@ errors Process(options_t &opt)
 			rc = RotateModel(model, opt.params.r_angles);
 			break;
 		}
+		case SCALE_MODEL:
+		{
+			rc = ScaleModel(model, opt.params.s_coeff);
+			break;
+		}
 		case DESTROY_MODEL:
 		{
 			FreeModel(model);

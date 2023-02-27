@@ -127,6 +127,11 @@ void PrintErrorMessage(const errors &err)
 			QMessageBox::critical(NULL, "Error", "Incorrect center");
 			break;
 		}
+        case ERR_INCORRECT_COEFFICIENTS:
+        {
+            QMessageBox::critical(NULL, "Error", "Incorrect coefficients");
+            break;
+        }
         default:
             break;
     }

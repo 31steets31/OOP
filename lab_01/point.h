@@ -1,7 +1,7 @@
 #ifndef __POINT_FUNCTIONS_AND_TYPES__
 #define __POINT_FUNCTIONS_AND_TYPES__
 
-#include "process.h"
+#include "model_actions.h"
 
 /**
  * \brief Point type

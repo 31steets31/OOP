@@ -2,7 +2,7 @@
 #define __VERTICES_FUNCTIONS_AND_TYPES__
 
 #include "point.h"
-#include "process.h"
+#include "model_actions.h"
 
 /**
  * \brief Vertexes struct

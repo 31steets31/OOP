@@ -20,7 +20,7 @@ errors ReadCounts(FILE* file, int& vertices_count, int& faces_count)
     errors rc = ERR_SUCCESS;
 
     // Read counts
-    int read_count = fscanf(file, "v: %d; f: %d", &vertices_count, &faces_count);
+    int read_count = fscanf(file, "v: %d; f: %d\n", &vertices_count, &faces_count);
 
     if (read_count != 2)
         rc = ERR_GET_COUNTS;
@@ -41,7 +41,7 @@ errors ReadVertex(FILE* file, point_t& vertex)
     errors rc = ERR_SUCCESS;
 
     // Read point
-    int read_count = fscanf(file, "%lf %lf %lf",
+    int read_count = fscanf(file, "%lf %lf %lf\n",
         &(vertex.x),
         &(vertex.y),
         &(vertex.z));
@@ -65,7 +65,7 @@ errors ReadFace(FILE* file, face_t& face)
     errors rc = ERR_SUCCESS;
 
     // Read point
-    int read_count = fscanf(file, "%d %d",
+    int read_count = fscanf(file, "%d %d\n",
         &(face.a),
         &(face.b));
 
@@ -93,16 +93,14 @@ errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces)
 
     int i = 0, j = 0;
 
-    while (feof(file) == 0 &&
-        i < vertices.n_vertices &&
-        j < faces.n_faces)
+    while (feof(file) == 0)
     {
         // Get type of data in line
         type = getc(file);
 
-        if (type == 'v')
+        if (type == 'v' && i < vertices.n_vertices)
             rc = ReadVertex(file, vertices.points[i++]);
-        else if (type == 'f')
+        else if (type == 'f' && j < faces.n_faces)
             rc = ReadFace(file, faces.arr[j++]);
         else
             rc = ERR_READING_FILE;
@@ -112,8 +110,7 @@ errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces)
     }
 
     if (rc == ERR_SUCCESS &&
-        (vertices.n_vertices != i || faces.n_faces != j ||
-            feof(file) == 0))
+        (vertices.n_vertices != i || faces.n_faces != j))
         rc = ERR_READING_FILE;
 
     return rc;
@@ -158,12 +155,14 @@ void PrintErrorMessage(const errors &err)
 		}
         case ERR_GET_COUNTS:
         {
-            QMessageBox::critical(NULL, "Error", "Can't read file");
+            QMessageBox::critical(NULL, "Error", "Can't read file. \n"
+                "Incorrect counts");
             break;
         }
 		case ERR_READING_FILE:
         {
-            QMessageBox::critical(NULL, "Error", "Can't read file");
+            QMessageBox::critical(NULL, "Error", "Can't read file\n"
+                "Incorrect data");
             break;
         }
         case ERR_INCORRECT_COORDINATES:

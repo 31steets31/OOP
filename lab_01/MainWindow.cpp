@@ -3,8 +3,8 @@
 #include "in_out.h"
 #include "model.h"
 #include "errors.h"
-#include "process.h"
 #include "paint.h"
+#include "process.h"
 
 #include <QFileDialog>
 #include <QMessageBox>

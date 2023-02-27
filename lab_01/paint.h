@@ -5,7 +5,6 @@
 
 #include "model.h"
 #include "point.h"
-#include "paint.h"
 #include "vertices.h"
 #include "faces.h"
 

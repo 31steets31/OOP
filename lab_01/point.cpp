@@ -22,16 +22,19 @@ void TransferPoint(point_t& point, const transfer_t& t_coord)
  */
 void RotatePointYZ(point_t& point, const rotate_t& r_angles)
 {
+	double temp_y = point.y;
+	double temp_z = point.z;
+
 	point.y = r_angles.y_center +
-		(point.y - r_angles.y_center) *
+		(temp_y - r_angles.y_center) *
 		cos(r_angles.x_angle * M_PI / 180.0) -
-		(point.z - r_angles.z_center) *
+		(temp_z - r_angles.z_center) *
 		sin(r_angles.x_angle * M_PI / 180.0);
 
 	point.z = r_angles.z_center +
-		(point.y - r_angles.y_center) *
+		(temp_y - r_angles.y_center) *
 		sin(r_angles.x_angle * M_PI / 180.0) +
-		(point.z - r_angles.z_center) *
+		(temp_z - r_angles.z_center) *
 		cos(r_angles.x_angle * M_PI / 180.0);
 }
 
@@ -43,14 +46,19 @@ void RotatePointYZ(point_t& point, const rotate_t& r_angles)
  */
 void RotatePointXZ(point_t& point, const rotate_t& r_angles)
 {
-	point.x = r_angles.x_center + (point.x - r_angles.x_center) *
+	double temp_x = point.x;
+	double temp_z = point.z;
+
+	point.x = r_angles.x_center + 
+		(temp_x - r_angles.x_center) *
 		cos(r_angles.y_angle * M_PI / 180.0) +
-		(point.z - r_angles.z_center) *
+		(temp_z - r_angles.z_center) *
 		sin(r_angles.y_angle * M_PI / 180.0);
 
-	point.z = r_angles.z_center - (point.x - r_angles.x_center) *
+	point.z = r_angles.z_center - 
+		(temp_x - r_angles.x_center) *
 		sin(r_angles.y_angle * M_PI / 180.0) +
-		(point.z - r_angles.z_center) *
+		(temp_z - r_angles.z_center) *
 		cos(r_angles.y_angle * M_PI / 180.0);
 }
 
@@ -62,14 +70,19 @@ void RotatePointXZ(point_t& point, const rotate_t& r_angles)
  */
 void RotatePointXY(point_t& point, const rotate_t& r_angles)
 {
-	point.x = r_angles.x_center + (point.x - r_angles.x_center) *
+	double temp_x = point.x;
+	double temp_y = point.y;
+
+	point.x = r_angles.x_center + 
+		(temp_x - r_angles.x_center) *
 		cos(r_angles.z_angle * M_PI / 180.0) -
-		(point.y - r_angles.y_center) *
+		(temp_y - r_angles.y_center) *
 		sin(r_angles.z_angle * M_PI / 180.0);
 
-	point.y = r_angles.y_center + (point.x - r_angles.x_center) *
+	point.y = r_angles.y_center + 
+		(temp_x - r_angles.x_center) *
 		sin(r_angles.z_angle * M_PI / 180.0) +
-		(point.y - r_angles.y_center) *
+		(temp_y - r_angles.y_center) *
 		cos(r_angles.z_angle * M_PI / 180.0);
 }
 

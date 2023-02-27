@@ -3,18 +3,19 @@
 
 #include "errors.h"
 #include "paint.h"
-#include "process.h"
 #include "vertices.h"
 #include "faces.h"
+
+struct canvas_t;
 
 /**
  * \brief Type for storing model
  */
-typedef struct
+struct model_t
 {
     vertices_t vertices;
     faces_t faces;
-} model_t;
+};
 
 /**
  * \brief Allocate model

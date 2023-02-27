@@ -47,19 +47,12 @@ void RotateVertices(vertices_t& vertices, const rotate_t& r_angles)
 {
 	for (int i = 0; i < vertices.n_vertices; ++i)
 	{
-		// Get vertex
-		point_t vertex = vertices.points[i];
-
 		// Rotate around center point r_angles.x_center, r_angles.y_center, r_angles.z_center
-		RotatePointYZ(vertex, r_angles);
+		RotatePointYZ(vertices.points[i], r_angles);
 
-		vertex = vertices.points[i];
+		RotatePointXZ(vertices.points[i], r_angles);
 
-		RotatePointXZ(vertex, r_angles);
-
-		vertex = vertices.points[i];
-
-		RotatePointXY(vertex, r_angles);
+		RotatePointXY(vertices.points[i], r_angles);
 	}
 }
 

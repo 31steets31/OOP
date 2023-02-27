@@ -97,7 +97,7 @@ errors DrawModel(const model_t &model, canvas_t &canvas)
 	ClearCanvas(canvas);
 
 	// Draw model
-	AddLines(canvas, model.vertices, model.faces);
+	AddLines(canvas, (vertices_t&) model.vertices, (faces_t&)model.faces);
 
 	return ERR_SUCCESS;
 }

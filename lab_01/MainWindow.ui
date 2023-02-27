@@ -455,7 +455,7 @@ font: 63 14pt &quot;URW Gothic&quot;;</string>
      <string>Информация</string>
     </property>
     <addaction name="AuthorInfo"/>
-    <addaction name="TaskInfo"/>
+    <addaction name="ProgramInfo"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -480,7 +480,7 @@ font: 63 14pt &quot;URW Gothic&quot;;</string>
     <string>Об авторе</string>
    </property>
   </action>
-  <action name="TaskInfo">
+  <action name="ProgramInfo">
    <property name="text">
     <string>О программе</string>
    </property>

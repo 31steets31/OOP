@@ -3,6 +3,9 @@
 
 #include <QGraphicsScene>
 
+/**
+ * \brief Canvas
+ */
 typedef struct
 {
 	QGraphicsScene *canvas;

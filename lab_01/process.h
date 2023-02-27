@@ -4,6 +4,9 @@
 #include "paint.h"
 #include "defines.h"
 
+/**
+ * \brief Allowed actions
+ */
 enum actions
 {
 	LOAD_MODEL,
@@ -14,6 +17,9 @@ enum actions
 	SCALE_MODEL,
 };
 
+/**
+ * \brief Offsets for transfer
+ */
 struct transfer_t
 {
 	double dx;
@@ -21,6 +27,9 @@ struct transfer_t
 	double dz;
 };
 
+/**
+ * \brief Coordinates and angles for rotation
+ */
 struct rotate_t
 {
 	double x_center;
@@ -32,6 +41,9 @@ struct rotate_t
 	double z_angle;
 };
 
+/**
+ * \brief Coordinates and coefficients for scaling
+ */
 struct scale_t
 {
 	double x_center;
@@ -43,6 +55,9 @@ struct scale_t
 	double kz;
 };
 
+/**
+ * \brief Options for processing
+ */
 typedef struct
 {
 	actions action;

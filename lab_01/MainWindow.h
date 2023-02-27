@@ -25,6 +25,9 @@ private slots:
     void on_ScaleButton_clicked(void);
     void on_RotateButton_clicked(void);
     void on_ClearGraph_clicked(void);
+    void on_AuthorInfo_triggered(void);
+    void on_ProgramInfo_triggered(void);
+    void on_Exit_triggered(void);
 
 private:
     Ui::MainWindow *ui;

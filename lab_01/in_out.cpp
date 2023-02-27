@@ -10,6 +10,7 @@
  * \brief Load model from file
  * 
  * \param filename
+ * \param model
  * \return 
  */
 errors LoadModel(model_t &model, const char *filename)
@@ -86,6 +87,29 @@ errors LoadModel(model_t &model, const char *filename)
     fclose(file);
     
     return ERR_SUCCESS;
+}
+
+/**
+ * \brief Print author information
+ */
+void PrintAuthorInfo(void)
+{
+    QMessageBox::information(
+        NULL, 
+        "Author information", 
+        "Stepan Postnov, ICS7-41B.");
+}
+
+/**
+ * \brief Print program information
+ */
+void PrintProgramInfo(void)
+{
+    QMessageBox::information(
+		NULL, 
+		"Program information", 
+		"This program is intended for drawing 3D models.\n "
+        "It allows you to translate, rotate and scale.");
 }
 
 /**

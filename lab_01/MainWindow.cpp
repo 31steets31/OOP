@@ -39,13 +39,13 @@ MainWindow::~MainWindow(void)
 {
     // Free the model
     options_t opt;
+
     opt.action = DESTROY_MODEL;
 
     int rc = Process(opt);
 
     // Delete the UI object
     delete ui;
-
 }
 
 /**
@@ -332,4 +332,29 @@ void MainWindow::on_ClearGraph_clicked(void)
 	canvas.canvas = ui->graphicsView->scene();
 
 	ClearCanvas(canvas);
+}
+
+/**
+ * \brief Print author information
+ */
+void MainWindow::on_AuthorInfo_triggered(void)
+{
+    PrintAuthorInfo();
+}
+
+/**
+ * \brief Print program information
+ */
+void MainWindow::on_ProgramInfo_triggered(void)
+{
+	PrintProgramInfo();
+}
+
+/**
+ * \brief Exit program
+ */
+void MainWindow::on_Exit_triggered(void)
+{
+	// Close window
+	close();
 }

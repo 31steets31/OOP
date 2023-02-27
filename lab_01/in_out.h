@@ -12,6 +12,14 @@
  */
 errors LoadModel(model_t& model, const char *filename);
 /**
+ * \brief Print author information
+ */
+void PrintAuthorInfo(void);
+/**
+ * \brief Print program information
+ */
+void PrintProgramInfo(void);
+/**
  * \brief Print error message
  *
  * \param err

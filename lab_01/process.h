@@ -9,6 +9,38 @@ enum actions
 	LOAD_MODEL,
 	DESTROY_MODEL,
 	DRAW_MODEL,
+	TRANSFER_MODEL,
+	ROTATE_MODEL,
+	SCALE_MODEL,
+};
+
+struct transfer_t
+{
+	double dx;
+	double dy;
+	double dz;
+};
+
+struct rotate_t
+{
+	double x_center;
+	double y_center;
+	double z_center;
+
+	double x_angle;
+	double y_angle;
+	double z_angle;
+};
+
+struct scale_t
+{
+	double x_center;
+	double y_center;
+	double z_center;
+
+	double x_coeff;
+	double y_coeff;
+	double z_coeff;
 };
 
 typedef struct
@@ -18,6 +50,9 @@ typedef struct
 	{
 		char filename[MAX_FILENAME_LEN + 1];
 		canvas_t canvas;
+		transfer_t t_coord;
+		rotate_t r_angles;
+		scale_t s_coeff;
 	} params;
 } options_t;
 

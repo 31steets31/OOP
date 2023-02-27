@@ -27,6 +27,16 @@ errors Process(options_t &opt)
 			rc = DrawModel(model, opt.params.canvas);
 			break;
 		}
+		case TRANSFER_MODEL:
+		{
+			rc = TransferModel(model, opt.params.t_coord);
+			break;
+		}
+		case ROTATE_MODEL:
+		{
+			rc = RotateModel(model, opt.params.r_angles);
+			break;
+		}
 		case DESTROY_MODEL:
 		{
 			FreeModel(model);

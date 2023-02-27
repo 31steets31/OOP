@@ -3,6 +3,7 @@
 
 #include "errors.h"
 #include "paint.h"
+#include "process.h"
 
 /**
  * \brief Type for storing vertex coordinates
@@ -49,6 +50,22 @@ model_t &InitModel(void);
  * \return
  */
 errors DrawModel(const model_t& model, canvas_t& canvas);
+/**
+*\brief Transfer model
+*
+* \param model
+* \param t_coord
+* \return
+*/
+errors TransferModel(model_t& model, const transfer_t& t_coord);
+/**
+ * \brief Rotate model
+ *
+ * \param model
+ * \param r_angles
+ * \return
+ */
+errors RotateModel(model_t& model, const rotate_t& r_angles);
 /**
  * \brief Free model
  *

@@ -19,8 +19,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_LoadFigureButton_clicked();
     errors DrawModel(void);
+    void on_LoadFigureButton_clicked(void);
+    void on_TransferButton_clicked(void);
+    void on_RotateButton_clicked(void);
+    void on_ClearGraph_clicked(void);
 
 private:
     Ui::MainWindow *ui;

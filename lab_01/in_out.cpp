@@ -107,6 +107,26 @@ void PrintErrorMessage(const errors &err)
             QMessageBox::critical(NULL, "Error", "Can't read file");
             break;
         }
+        case ERR_INCORRECT_COORDINATES:
+        {
+			QMessageBox::critical(NULL, "Error", "Incorrect coordinates");
+			break;
+		}
+        case ERR_INCORRECT_OFFSET:
+        {
+            QMessageBox::critical(NULL, "Error", "Incorrect offsets");
+            break;
+        }
+        case ERR_INCORRECT_ANGLES:
+        {
+			QMessageBox::critical(NULL, "Error", "Incorrect angles");
+			break;
+		}
+        case ERR_INCORRECT_CENTER:
+        {
+			QMessageBox::critical(NULL, "Error", "Incorrect center");
+			break;
+		}
         default:
             break;
     }

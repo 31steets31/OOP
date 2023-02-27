@@ -4,6 +4,7 @@
 #include "errors.h"
 #include "paint.h"
 #include "defines.h"
+#include "process.h"
 
 /**
  * \brief Initialize model
@@ -47,6 +48,69 @@ errors DrawModel(const model_t &model, canvas_t &canvas)
 			model.vertices[face.b].x + CANVAS_WIDTH / 2,
 			-model.vertices[face.b].y + CANVAS_HEIGHT / 2
 		);
+	}
+
+	return ERR_SUCCESS;
+}
+
+/**
+ * \brief Transfer model
+ * 
+ * \param model
+ * \param t_coord
+ * \return 
+ */
+errors TransferModel(model_t& model, const transfer_t& t_coord)
+{
+	for (int i = 0; i < model.n_vertices; ++i)
+	{
+		model.vertices[i].x += t_coord.dx;
+		model.vertices[i].y += t_coord.dy;
+		model.vertices[i].z += t_coord.dz;
+	}
+
+	return ERR_SUCCESS;
+}
+
+/**
+ * \brief Rotate model
+ * 
+ * \param model
+ * \param r_angles
+ * \return 
+ */
+errors RotateModel(model_t& model, const rotate_t& r_angles)
+{
+	for (int i = 0; i < model.n_vertices; ++i)
+	{
+		// Get vertex
+		vertex_t vertex = model.vertices[i];
+
+		// Rotate around center point r_angles.x_center, r_angles.y_center, r_angles.z_center
+		model.vertices[i].y = r_angles.y_center + (vertex.y - r_angles.y_center) *
+			cos(r_angles.x_angle * M_PI / 180.0) - (vertex.z - r_angles.z_center) *
+			sin(r_angles.x_angle * M_PI / 180.0);
+		model.vertices[i].z = r_angles.z_center + (vertex.y - r_angles.y_center) *
+			sin(r_angles.x_angle * M_PI / 180.0) + (vertex.z - r_angles.z_center) *
+			cos(r_angles.x_angle * M_PI / 180.0);
+
+		vertex = model.vertices[i];
+
+		model.vertices[i].x = r_angles.x_center + (vertex.x - r_angles.x_center) *
+			cos(r_angles.y_angle * M_PI / 180.0) + (vertex.z - r_angles.z_center) *
+			sin(r_angles.y_angle * M_PI / 180.0);
+		model.vertices[i].z = r_angles.z_center - (vertex.x - r_angles.x_center) *
+			sin(r_angles.y_angle * M_PI / 180.0) + (vertex.z - r_angles.z_center) *
+			cos(r_angles.y_angle * M_PI / 180.0);
+
+		vertex = model.vertices[i];
+
+		model.vertices[i].x = r_angles.x_center + (vertex.x - r_angles.x_center) *
+			cos(r_angles.z_angle * M_PI / 180.0) - (vertex.y - r_angles.y_center) *
+			sin(r_angles.z_angle * M_PI / 180.0);
+		model.vertices[i].y = r_angles.y_center + (vertex.x - r_angles.x_center) *
+			sin(r_angles.z_angle * M_PI / 180.0) + (vertex.y - r_angles.y_center) *
+			cos(r_angles.z_angle * M_PI / 180.0);
 	}
 
 	return ERR_SUCCESS;

@@ -26,6 +26,13 @@ struct model_t
  */
 void AllocateModel(model_t& model, int& vertices_count, int& faces_count);
 /**
+ * \brief Copy model from src to dst
+ *
+ * \param src
+ * \param dst
+ */
+void CopyModel(const model_t& src, model_t& dst);
+/**
  * \brief Initialize model
  *
  * \param filename

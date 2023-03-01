@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include "faces.h"
+
+#include <iostream>
 
 /**
  * \brief Initialize faces

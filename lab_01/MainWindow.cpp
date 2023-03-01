@@ -88,6 +88,15 @@ void MainWindow::on_LoadFigureButton_clicked(void)
     if (filename.isEmpty())
         return;
 
+    // If filename length > max length, return
+    if (filename.length() > MAX_FILENAME_LEN)
+    {
+        errors rc = ERR_FILENAME_LEN;
+
+        PrintErrorMessage(rc);
+        return;
+    }
+
     // Set options
     options_t opt;
 

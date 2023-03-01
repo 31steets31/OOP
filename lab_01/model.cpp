@@ -40,6 +40,17 @@ void AllocateModel(model_t& model, int& vertices_count, int& faces_count)
 }
 
 /**
+ * \brief Copy model from src to dst
+ * 
+ * \param src
+ * \param dst
+ */
+void CopyModel(const model_t& src, model_t& dst)
+{
+	dst = src;
+}
+
+/**
  * \brief Load model from file
  *
  * \param filename
@@ -57,29 +68,39 @@ errors LoadModel(model_t& model, const char* filename)
 	if (!file)
 		rc = ERR_OPEN_FILE;
 
+	// Create buffer model
+	model_t buf_model;
+
 	if (rc == ERR_SUCCESS)
 	{
-		// Get vertices and faces count
+		// Create buffer vertices and faces
 		int vertices_count = 0;
 		int faces_count = 0;
 
+		// Get vertices and faces count
 		rc = ReadCounts(file, vertices_count, faces_count);
 
 		if (rc == ERR_SUCCESS)
 		{
 			// Allocate memory for model
-			AllocateModel(model, vertices_count, faces_count);
+			AllocateModel(buf_model, vertices_count, faces_count);
 
 			// Read model
-			rc = ReadModel(file, model.vertices, model.faces);
+			rc = ReadModel(file, buf_model.vertices, buf_model.faces);
 		}
 
 		fclose(file);
 	}
 
-	// Free model if file is incorrect
-	if (rc == ERR_READING_FILE)
+	// Copy buffer to model
+	if (rc == ERR_SUCCESS)
+	{
 		FreeModel(model);
+		CopyModel(buf_model, model);
+	}
+	// Free buffer model if file is incorrect
+	else if (rc == ERR_READING_FILE)
+		FreeModel(buf_model);
 
 	return rc;
 }

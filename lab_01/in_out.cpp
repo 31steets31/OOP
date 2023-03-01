@@ -148,6 +148,11 @@ void PrintErrorMessage(const errors &err)
 {
     switch (err)
     {
+        case ERR_FILENAME_LEN:
+        {
+            QMessageBox::critical(NULL, "Error", "Incorrect filename length");
+            break;
+        }
         case ERR_OPEN_FILE:
         {
 			QMessageBox::critical(NULL, "Error", "Can't open file");

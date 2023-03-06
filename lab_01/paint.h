@@ -6,6 +6,17 @@
 #include "faces.h"
 #include "canvas.h"
 
+struct vertices_t;
+
+/**
+ * \brief 2d point
+ */
+struct project_point_t
+{
+	double x;
+	double y;
+};
+
 /**
  * \brief Draw line on canvas
  *
@@ -13,7 +24,7 @@
  * \param a
  * \param b
  */
-void AddLine(const canvas_t& canvas, const point_t& a, const point_t& b);
+void AddLine(const canvas_t& canvas, const project_point_t& a, const project_point_t& b);
 /**
  * \brief Draw lines on canvas
  *

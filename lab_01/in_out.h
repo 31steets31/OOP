@@ -10,14 +10,21 @@
 #include "vertices.h"
 
 /**
- * \brief Read vertices and faces count
+ * \brief Read vertices count
  *
- * \param file
  * \param vertices_count
- * \param faces_count
+ * \param file
  * \return
  */
-errors ReadCounts(int& vertices_count, int& faces_count, FILE* file);
+errors ReadVerticesCount(int& vertices_count, FILE* file);
+/**
+ * \brief Read faces count
+ *
+ * \param faces_count
+ * \param file
+ * \return
+ */
+errors ReadFacesCount(int& faces_count, FILE* file);
 /**
  * \brief Read one vertex
  *
@@ -35,6 +42,40 @@ errors ReadVertex(point_t& vertex, FILE* file);
  */
 errors ReadFace(face_t& face, FILE* file);
 /**
+ * \brief Read all vertices
+ *
+ * \param vertices
+ * \param count
+ * \param file
+ * \return
+ */
+errors ReadAllVertices(point_t* vertices, int& count, FILE* file);
+/**
+ * \brief Read all faces
+ *
+ * \param faces
+ * \param count
+ * \param file
+ * \return
+ */
+errors ReadAllFaces(face_t* faces, int& count, FILE* file);
+/**
+ * \brief Read vertices
+ *
+ * \param vertices
+ * \param file
+ * \return
+ */
+errors ReadVertices(vertices_t& vertices, FILE* file);
+/**
+ * \brief Read faces
+ *
+ * \param faces
+ * \param file
+ * \return
+ */
+errors ReadFaces(faces_t& faces, FILE* file);
+/**
  * \brief Read model data
  *
  * \param file
@@ -42,7 +83,7 @@ errors ReadFace(face_t& face, FILE* file);
  * \param faces
  * \return
  */
-errors ReadModel(vertices_t& vertices, faces_t& faces, FILE* file);
+errors ReadModel(model_t& model, FILE* file);
 /**
  * \brief Print author information
  */

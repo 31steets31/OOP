@@ -5,24 +5,46 @@
 #include "model.h"
 #include "defines.h"
 #include "errors.h"
+#include "vertices.h"
+#include "faces.h"
 
 /**
- * \brief Read vertices and faces count
+ * \brief Read vertices count
  * 
- * \param file
  * \param vertices_count
- * \param faces_count
+ * \param file
  * \return 
  */
-errors ReadCounts(int& vertices_count, int& faces_count, FILE* file)
+errors ReadVerticesCount(int& vertices_count, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
 
     // Read counts
-    int read_count = fscanf(file, "v: %d; f: %d\n", &vertices_count, &faces_count);
+    int read_count = fscanf(file, "v: %d\n", &vertices_count);
 
-    if (read_count != 2)
+    if (read_count != 1)
+        rc = ERR_GET_COUNTS;
+
+    return rc;
+}
+
+/**
+ * \brief Read faces count
+ *
+ * \param vertices_count
+ * \param file
+ * \return
+ */
+errors ReadFacesCount(int& faces_count, FILE* file)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    // Read counts
+    int read_count = fscanf(file, "f: %d\n", &faces_count);
+
+    if (read_count != 1)
         rc = ERR_GET_COUNTS;
 
     return rc;
@@ -76,6 +98,104 @@ errors ReadFace(face_t& face, FILE* file)
 }
 
 /**
+ * \brief Read all vertices
+ * 
+ * \param vertices
+ * \param count
+ * \param file
+ * \return 
+ */
+errors ReadAllVertices(point_t* vertices, int& count, FILE* file)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    for (int i = 0; rc == ERR_SUCCESS && i < count; ++i)
+        rc = ReadVertex(vertices[i], file);
+
+    return rc;
+}
+
+/**
+ * \brief Read all faces
+ *
+ * \param faces
+ * \param count
+ * \param file
+ * \return
+ */
+errors ReadAllFaces(face_t* faces, int& count, FILE* file)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    for (int i = 0; rc == ERR_SUCCESS && i < count; ++i)
+        rc = ReadFace(faces[i], file);
+
+    return rc;
+}
+
+/**
+ * \brief Read vertices
+ * 
+ * \param vertices
+ * \param file
+ * \return 
+ */
+errors ReadVertices(vertices_t& vertices, FILE* file)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    rc = ReadVerticesCount(vertices.n_vertices, file);
+
+    if (rc == ERR_SUCCESS)
+    {
+        rc = AllocateVertices(vertices, vertices.n_vertices);
+
+        if (rc == ERR_SUCCESS)
+        {
+            rc = ReadAllVertices(vertices.points, vertices.n_vertices, file);
+
+            if (rc != ERR_SUCCESS)
+                FreeVertices(vertices);
+        }
+    }
+
+    return rc;
+}
+
+/**
+ * \brief Read faces
+ *
+ * \param faces
+ * \param file
+ * \return
+ */
+errors ReadFaces(faces_t& faces, FILE* file)
+{
+    // Return code
+    errors rc = ERR_SUCCESS;
+
+    rc = ReadFacesCount(faces.n_faces, file);
+
+    if (rc == ERR_SUCCESS)
+    {
+        rc = AllocateFaces(faces, faces.n_faces);
+
+        if (rc == ERR_SUCCESS)
+        {
+            rc = ReadAllFaces(faces.arr, faces.n_faces, file);
+
+            if (rc != ERR_SUCCESS)
+                FreeFaces(faces);
+        }
+    }
+
+    return rc;
+}
+
+/**
  * \brief Read model data
  * 
  * \param file
@@ -83,35 +203,22 @@ errors ReadFace(face_t& face, FILE* file)
  * \param faces
  * \return 
  */
-errors ReadModel(vertices_t& vertices, faces_t& faces, FILE* file)
+errors ReadModel(model_t& model, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
 
-    // Read data
-    char type;
+    // Read vertices
+    rc = ReadVertices(model.vertices, file);
 
-    int i = 0, j = 0;
-
-    while (feof(file) == 0)
+    if (rc == ERR_SUCCESS)
     {
-        // Get type of data in line
-        type = getc(file);
-
-        if (type == 'v' && i < vertices.n_vertices)
-            rc = ReadVertex(vertices.points[i++], file);
-        else if (type == 'f' && j < faces.n_faces)
-            rc = ReadFace(faces.arr[j++], file);
-        else
-            rc = ERR_READING_FILE;
+        // Read faces
+        rc = ReadFaces(model.faces, file);
 
         if (rc != ERR_SUCCESS)
-            break;
+            FreeVertices(model.vertices);
     }
-
-    if (rc == ERR_SUCCESS &&
-        (vertices.n_vertices != i || faces.n_faces != j))
-        rc = ERR_READING_FILE;
 
     return rc;
 }
@@ -153,6 +260,11 @@ void PrintErrorMessage(const errors &err)
             QMessageBox::critical(NULL, "Error", "Incorrect filename length");
             break;
         }
+        case ERR_ALLOCATE:
+        {
+            QMessageBox::critical(NULL, "Error", "No free memory");
+            break;
+        }
         case ERR_OPEN_FILE:
         {
 			QMessageBox::critical(NULL, "Error", "Can't open file");
@@ -160,13 +272,13 @@ void PrintErrorMessage(const errors &err)
 		}
         case ERR_GET_COUNTS:
         {
-            QMessageBox::critical(NULL, "Error", "Can't read file. \n"
+            QMessageBox::critical(NULL, "Error", "Can't read file"
                 "Incorrect counts");
             break;
         }
 		case ERR_READING_FILE:
         {
-            QMessageBox::critical(NULL, "Error", "Can't read file\n"
+            QMessageBox::critical(NULL, "Error", "Can't read file"
                 "Incorrect data");
             break;
         }

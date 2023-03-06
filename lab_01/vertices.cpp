@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "vertices.h"
+#include "errors.h"
 
 /**
  * \brief Initialize vertices
@@ -19,10 +20,19 @@ void InitVertices(vertices_t& vertices)
  * \param vertices
  * \param count
  */
-void AllocateVertices(vertices_t& vertices, int& count)
+errors AllocateVertices(vertices_t& vertices, int& count)
 {
-	vertices.n_vertices = count;
+	// Return code
+	errors rc = ERR_SUCCESS;
+
 	vertices.points = (point_t*)malloc(sizeof(point_t) * count);
+
+	if (!vertices.points)
+		rc = ERR_ALLOCATE;
+	else
+		vertices.n_vertices = count;
+
+	return rc;
 }
 
 /**

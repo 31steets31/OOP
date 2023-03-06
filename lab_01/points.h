@@ -2,6 +2,9 @@
 #define __POINT_FUNCTIONS_AND_TYPES__
 
 #include "model_actions.h"
+#include "paint.h"
+
+struct project_point_t;
 
 /**
  * \brief Point type
@@ -20,13 +23,12 @@ struct point_t
  * \return
  */
 static inline double ToRadians(const double& angle);
-
 /**
  * \brief Project point
  *
  * \param a
  */
-void ProjectPoint(point_t& a);
+void ProjectPoint(project_point_t& project_point, point_t& a);
 /**
  * \brief Get point by index
  *
@@ -34,14 +36,15 @@ void ProjectPoint(point_t& a);
  * \param index
  * \return
  */
-point_t& GetPointByIndex(point_t* points, int& index);
+point_t GetPointByIndex(point_t* points, int& index);
 /**
  * \brief Transfer point
  *
  * \param point
  * \param t_coord
  */
-void TransferPoint(point_t& point, const transfer_t& t_coord);/**
+void TransferPoint(point_t& point, const transfer_t& t_coord);
+/**
  * \brief Transfer points
  *
  * \param points

@@ -30,13 +30,24 @@ model_t& InitModel(void)
  * \param vertices_count
  * \param faces_count
  */
-void AllocateModel(model_t& model, int& vertices_count, int& faces_count)
+errors AllocateModel(model_t& model, int& vertices_count, int& faces_count)
 {
-	// Allocate vertices
-	AllocateVertices(model.vertices, vertices_count);
+	// Return code
+	errors rc = ERR_SUCCESS;
 
-	// Allocate faces
-	AllocateFaces(model.faces, faces_count);
+	// Allocate vertices
+	rc = AllocateVertices(model.vertices, vertices_count);
+
+	if (rc == ERR_SUCCESS)
+	{
+		// Allocate faces
+		rc = AllocateFaces(model.faces, faces_count);
+
+		if (rc != ERR_SUCCESS)
+			FreeVertices(model.vertices);
+	}
+
+	return rc;
 }
 
 /**
@@ -45,7 +56,7 @@ void AllocateModel(model_t& model, int& vertices_count, int& faces_count)
  * \param src
  * \param dst
  */
-void CopyModel(const model_t& src, model_t& dst)
+void CopyModel(model_t& dst, const model_t& src)
 {
 	dst = src;
 }
@@ -74,36 +85,13 @@ errors LoadModel(model_t& model, const char* filename)
 	// Create buffer model
 	model_t buf_model;
 
-	if (rc == ERR_SUCCESS)
-	{
-		// Create buffer vertices and faces
-		int vertices_count = 0;
-		int faces_count = 0;
+	rc = ReadModel(buf_model, file);
 
-		// Get vertices and faces count
-		rc = ReadCounts(vertices_count, faces_count, file);
-
-		if (rc == ERR_SUCCESS)
-		{
-			// Allocate memory for model
-			AllocateModel(buf_model, vertices_count, faces_count);
-
-			// Read model
-			rc = ReadModel(buf_model.vertices, buf_model.faces, file);
-		}
-
-		fclose(file);
-	}
-
-	// Copy buffer to model
 	if (rc == ERR_SUCCESS)
 	{
 		FreeModel(model);
-		CopyModel(buf_model, model);
+		CopyModel(model, buf_model);
 	}
-	// Free buffer model if file is incorrect
-	else if (rc == ERR_READING_FILE)
-		FreeModel(buf_model);
 
 	return rc;
 }
@@ -115,13 +103,13 @@ errors LoadModel(model_t& model, const char* filename)
  * \param canvas
  * \return
  */
-errors DrawModel(const model_t &model, canvas_t &canvas)
+errors DrawModel(model_t &model, canvas_t &canvas)
 {
 	// Clear canvas
 	ClearCanvas(canvas);
 
 	// Draw model
-	AddLines(canvas, (vertices_t&) model.vertices, (faces_t&)model.faces);
+	AddLines(canvas, model.vertices, model.faces);
 
 	return ERR_SUCCESS;
 }

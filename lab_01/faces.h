@@ -1,6 +1,8 @@
 #ifndef __FACES_FUNCTIONS_AND_TYPES__
 #define __FACES_FUNCTIONS_AND_TYPES__
 
+#include "errors.h"
+
 /**
  * \brief Type for storing face indices
  */
@@ -31,7 +33,7 @@ void InitFaces(faces_t& faces);
  * \param faces
  * \param count
  */
-void AllocateFaces(faces_t& faces, int& count);
+errors AllocateFaces(faces_t& faces, int& count);
 /**
  * \brief Get face by index
  *
@@ -39,7 +41,7 @@ void AllocateFaces(faces_t& faces, int& count);
  * \param index
  * \return
  */
-face_t& GetFaceByIndex(face_t* faces, int& index);
+face_t GetFaceByIndex(face_t* faces, int& index);
 /**
  * \brief Free faces
  *

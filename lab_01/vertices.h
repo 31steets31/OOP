@@ -3,6 +3,9 @@
 
 #include "points.h"
 #include "model_actions.h"
+#include "errors.h"
+
+struct point_t;
 
 /**
  * \brief Vertexes struct
@@ -25,7 +28,7 @@ void InitVertices(vertices_t& vertices);
  * \param vertices
  * \param count
  */
-void AllocateVertices(vertices_t& vertices, int& count);
+errors AllocateVertices(vertices_t& vertices, int& count);
 /**
  * \brief Transfer vertices
  *

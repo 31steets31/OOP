@@ -17,10 +17,13 @@ static inline double ToRadians(const double& angle)
  *
  * \param a
  */
-void ProjectPoint(point_t& a)
+void ProjectPoint(project_point_t& project_point, point_t& a)
 {
 	a.x += CANVAS_WIDTH / 2;
-	a.y += -a.y + CANVAS_HEIGHT / 2;
+	a.y = -a.y + CANVAS_HEIGHT / 2;
+
+	project_point.x = a.x;
+	project_point.y = a.y;
 }
 
 /**
@@ -30,7 +33,7 @@ void ProjectPoint(point_t& a)
  * \param index
  * \return
  */
-point_t& GetPointByIndex(point_t* points, int& index)
+point_t GetPointByIndex(point_t* points, int& index)
 {
 	return points[index];
 }
@@ -121,21 +124,15 @@ void RotatePointXY(point_t& point, const double& angle)
  */
 void RotatePoints(point_t* points, const int& points_count, const rotate_t& r_angles)
 {
-	transfer_t d_point_plus = {
-		-r_angles.x_center,
-		-r_angles.y_center,
-		-r_angles.z_center
-	};
-
-	transfer_t d_point_minus = {
-		r_angles.x_center,
-		r_angles.y_center,
-		r_angles.z_center
-	};
+	transfer_t d_point;
 
 	for (int i = 0; i < points_count; ++i)
 	{
-		TransferPoint(points[i], d_point_plus);
+		d_point.dx = r_angles.x_center;
+		d_point.dy = r_angles.y_center;
+		d_point.dz = r_angles.z_center;
+
+		TransferPoint(points[i], d_point);
 
 		// Rotate around center point r_angles.x_center, r_angles.y_center, r_angles.z_center
 		RotatePointYZ(points[i], r_angles.x_angle);
@@ -144,7 +141,11 @@ void RotatePoints(point_t* points, const int& points_count, const rotate_t& r_an
 
 		RotatePointXY(points[i], r_angles.z_angle);
 
-		TransferPoint(points[i], d_point_minus);
+		d_point.dx = -r_angles.x_center;
+		d_point.dy = -r_angles.y_center;
+		d_point.dz = -r_angles.z_center;
+
+		TransferPoint(points[i], d_point);
 	}
 }
 

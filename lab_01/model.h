@@ -5,8 +5,7 @@
 #include "paint.h"
 #include "vertices.h"
 #include "faces.h"
-
-struct canvas_t;
+#include "canvas.h"
 
 /**
  * \brief Type for storing model
@@ -24,14 +23,14 @@ struct model_t
  * \param vertices_count
  * \param faces_count
  */
-void AllocateModel(model_t& model, int& vertices_count, int& faces_count);
+errors AllocateModel(model_t& model, int& vertices_count, int& faces_count);
 /**
  * \brief Copy model from src to dst
  *
  * \param src
  * \param dst
  */
-void CopyModel(const model_t& src, model_t& dst);
+void CopyModel(model_t& dst, const model_t& src);
 /**
  * \brief Initialize model
  *
@@ -54,7 +53,7 @@ errors LoadModel(model_t& model, const char* filename);
  * \param canvas
  * \return
  */
-errors DrawModel(const model_t& model, canvas_t& canvas);
+errors DrawModel(model_t& model, canvas_t& canvas);
 /**
 * \brief Transfer model
 *

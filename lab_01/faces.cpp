@@ -1,4 +1,5 @@
 #include "faces.h"
+#include "errors.h"
 
 #include <iostream>
 
@@ -19,10 +20,19 @@ void InitFaces(faces_t& faces)
  * \param faces
  * \param count
  */
-void AllocateFaces(faces_t& faces, int& count)
+errors AllocateFaces(faces_t& faces, int& count)
 {
-	faces.n_faces = count;
+	// Return code
+	errors rc = ERR_SUCCESS;
+
 	faces.arr = (face_t *) malloc(sizeof(face_t) * count);
+
+	if (!faces.arr)
+		rc = ERR_ALLOCATE;
+	else
+		faces.n_faces = count;
+
+	return rc;
 }
 
 /**
@@ -32,7 +42,7 @@ void AllocateFaces(faces_t& faces, int& count)
  * \param index
  * \return 
  */
-face_t& GetFaceByIndex(face_t* faces, int& index)
+face_t GetFaceByIndex(face_t* faces, int& index)
 {
 	return faces[index];
 }

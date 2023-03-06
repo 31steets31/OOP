@@ -66,7 +66,10 @@ errors LoadModel(model_t& model, const char* filename)
 	FILE* file = fopen(filename, "r");
 
 	if (!file)
+	{
 		rc = ERR_OPEN_FILE;
+		return rc;
+	}
 
 	// Create buffer model
 	model_t buf_model;
@@ -78,7 +81,7 @@ errors LoadModel(model_t& model, const char* filename)
 		int faces_count = 0;
 
 		// Get vertices and faces count
-		rc = ReadCounts(file, vertices_count, faces_count);
+		rc = ReadCounts(vertices_count, faces_count, file);
 
 		if (rc == ERR_SUCCESS)
 		{
@@ -86,7 +89,7 @@ errors LoadModel(model_t& model, const char* filename)
 			AllocateModel(buf_model, vertices_count, faces_count);
 
 			// Read model
-			rc = ReadModel(file, buf_model.vertices, buf_model.faces);
+			rc = ReadModel(buf_model.vertices, buf_model.faces, file);
 		}
 
 		fclose(file);

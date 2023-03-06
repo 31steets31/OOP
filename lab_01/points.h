@@ -13,7 +13,6 @@ struct point_t
     double z;
 };
 
-
 /**
  * \brief Transform angle to radians
  *
@@ -21,6 +20,21 @@ struct point_t
  * \return
  */
 static inline double ToRadians(const double& angle);
+
+/**
+ * \brief Project point
+ *
+ * \param a
+ */
+void ProjectPoint(point_t& a);
+/**
+ * \brief Get point by index
+ *
+ * \param points
+ * \param index
+ * \return
+ */
+point_t& GetPointByIndex(point_t* points, int& index);
 /**
  * \brief Transfer point
  *

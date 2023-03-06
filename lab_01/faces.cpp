@@ -26,6 +26,18 @@ void AllocateFaces(faces_t& faces, int& count)
 }
 
 /**
+ * \brief Get face by index
+ * 
+ * \param faces
+ * \param index
+ * \return 
+ */
+face_t& GetFaceByIndex(face_t* faces, int& index)
+{
+	return faces[index];
+}
+
+/**
  * \brief Free faces
  *
  * \param faces

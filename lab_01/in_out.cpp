@@ -14,7 +14,7 @@
  * \param faces_count
  * \return 
  */
-errors ReadCounts(FILE* file, int& vertices_count, int& faces_count)
+errors ReadCounts(int& vertices_count, int& faces_count, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
@@ -35,7 +35,7 @@ errors ReadCounts(FILE* file, int& vertices_count, int& faces_count)
  * \param vertex
  * \return 
  */
-errors ReadVertex(FILE* file, point_t& vertex)
+errors ReadVertex(point_t& vertex, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
@@ -59,7 +59,7 @@ errors ReadVertex(FILE* file, point_t& vertex)
  * \param face
  * \return
  */
-errors ReadFace(FILE* file, face_t& face)
+errors ReadFace(face_t& face, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
@@ -83,7 +83,7 @@ errors ReadFace(FILE* file, face_t& face)
  * \param faces
  * \return 
  */
-errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces)
+errors ReadModel(vertices_t& vertices, faces_t& faces, FILE* file)
 {
     // Return code
     errors rc = ERR_SUCCESS;
@@ -99,9 +99,9 @@ errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces)
         type = getc(file);
 
         if (type == 'v' && i < vertices.n_vertices)
-            rc = ReadVertex(file, vertices.points[i++]);
+            rc = ReadVertex(vertices.points[i++], file);
         else if (type == 'f' && j < faces.n_faces)
-            rc = ReadFace(file, faces.arr[j++]);
+            rc = ReadFace(faces.arr[j++], file);
         else
             rc = ERR_READING_FILE;
 

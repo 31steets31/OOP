@@ -17,7 +17,7 @@
  * \param faces_count
  * \return
  */
-errors ReadCounts(FILE* file, int& vertices_count, int& faces_count);
+errors ReadCounts(int& vertices_count, int& faces_count, FILE* file);
 /**
  * \brief Read one vertex
  *
@@ -25,7 +25,7 @@ errors ReadCounts(FILE* file, int& vertices_count, int& faces_count);
  * \param vertex
  * \return
  */
-errors ReadVertex(FILE* file, point_t& vertex);
+errors ReadVertex(point_t& vertex, FILE* file);
 /**
  * \brief Read one face
  *
@@ -33,7 +33,7 @@ errors ReadVertex(FILE* file, point_t& vertex);
  * \param face
  * \return
  */
-errors ReadFace(FILE* file, face_t& face);
+errors ReadFace(face_t& face, FILE* file);
 /**
  * \brief Read model data
  *
@@ -42,7 +42,7 @@ errors ReadFace(FILE* file, face_t& face);
  * \param faces
  * \return
  */
-errors ReadModel(FILE* file, vertices_t& vertices, faces_t& faces);
+errors ReadModel(vertices_t& vertices, faces_t& faces, FILE* file);
 /**
  * \brief Print author information
  */

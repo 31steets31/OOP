@@ -1,28 +1,11 @@
 #ifndef __PAINT__
 #define __PAINT__
 
-#include <QGraphicsScene>
-
-#include "model.h"
 #include "points.h"
 #include "vertices.h"
 #include "faces.h"
+#include "canvas.h"
 
-/**
- * \brief Canvas
- */
-struct canvas_t
-{
-	QGraphicsScene* canvas;
-};
-
-/**
- * \brief Clear canvas
- *
- * \param canvas
- * \return
- */
-void ClearCanvas(canvas_t& canvas);
 /**
  * \brief Draw line on canvas
  *

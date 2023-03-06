@@ -1,17 +1,7 @@
 #include "paint.h"
-#include "model.h"
 #include "defines.h"
-
-/**
- * \brief Clear canvas
- *
- * \param canvas
- * \return
- */
-void ClearCanvas(canvas_t& canvas)
-{
-	canvas.canvas->clear();
-}
+#include "points.h"
+#include "faces.h"
 
 /**
  * \brief Draw line on canvas
@@ -23,8 +13,8 @@ void ClearCanvas(canvas_t& canvas)
 void AddLine(const canvas_t& canvas, const point_t& a, const point_t& b)
 {
 	canvas.canvas->addLine(
-		a.x + CANVAS_WIDTH / 2, -a.y + CANVAS_HEIGHT / 2,
-		b.x + CANVAS_WIDTH / 2, -b.y + CANVAS_HEIGHT / 2
+		a.x, -a.y,
+		b.x, -b.y
 	);
 }
 
@@ -40,11 +30,15 @@ void AddLines(const canvas_t &canvas, vertices_t &vertexes, faces_t &faces)
 	for (int i = 0; i < faces.n_faces; ++i)
 	{
 		// Get face
-		face_t face = faces.arr[i];
+		face_t& face = GetFaceByIndex(faces.arr, i);
 
 		// Get vertexes
-		point_t& a = vertexes.points[face.a];
-		point_t& b = vertexes.points[face.b];
+		point_t& a = GetPointByIndex(vertexes.points, face.a);
+		point_t& b = GetPointByIndex(vertexes.points, face.b);
+
+		// Project point
+		ProjectPoint(a);
+		ProjectPoint(b);
 
 		// Draw line on canvas
 		AddLine(canvas, a, b);

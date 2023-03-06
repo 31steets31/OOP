@@ -13,6 +13,29 @@ static inline double ToRadians(const double& angle)
 }
 
 /**
+ * \brief Project point
+ *
+ * \param a
+ */
+void ProjectPoint(point_t& a)
+{
+	a.x += CANVAS_WIDTH / 2;
+	a.y += -a.y + CANVAS_HEIGHT / 2;
+}
+
+/**
+ * \brief Get point by index
+ *
+ * \param points
+ * \param index
+ * \return
+ */
+point_t& GetPointByIndex(point_t* points, int& index)
+{
+	return points[index];
+}
+
+/**
  * \brief Transfer point
  *
  * \param point

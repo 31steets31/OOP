@@ -1,7 +1,7 @@
 #ifndef __VERTICES_FUNCTIONS_AND_TYPES__
 #define __VERTICES_FUNCTIONS_AND_TYPES__
 
-#include "point.h"
+#include "points.h"
 #include "model_actions.h"
 
 /**

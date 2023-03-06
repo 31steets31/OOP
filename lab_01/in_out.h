@@ -5,7 +5,7 @@
 
 #include "errors.h"
 #include "model.h"
-#include "point.h"
+#include "points.h"
 #include "faces.h"
 #include "vertices.h"
 

@@ -33,8 +33,7 @@ void AllocateVertices(vertices_t& vertices, int& count)
  */
 void TransferVertices(vertices_t& vertices, const transfer_t& t_coord)
 {
-	for (int i = 0; i < vertices.n_vertices; ++i)
-		TransferPoint(vertices.points[i], t_coord);
+	TransferPoints(vertices.points, vertices.n_vertices, t_coord);
 }
 
 /**
@@ -45,15 +44,7 @@ void TransferVertices(vertices_t& vertices, const transfer_t& t_coord)
  */
 void RotateVertices(vertices_t& vertices, const rotate_t& r_angles)
 {
-	for (int i = 0; i < vertices.n_vertices; ++i)
-	{
-		// Rotate around center point r_angles.x_center, r_angles.y_center, r_angles.z_center
-		RotatePointYZ(vertices.points[i], r_angles);
-
-		RotatePointXZ(vertices.points[i], r_angles);
-
-		RotatePointXY(vertices.points[i], r_angles);
-	}
+	RotatePoints(vertices.points, vertices.n_vertices, r_angles);
 }
 
 /**
@@ -64,9 +55,7 @@ void RotateVertices(vertices_t& vertices, const rotate_t& r_angles)
  */
 void ScaleVertices(vertices_t& vertices, const scale_t& s_coeff)
 {
-	for (int i = 0; i < vertices.n_vertices; ++i)
-		// Scale coordinates around center point s_coeff.x_center, s_coeff.y_center, s_coeff.z_center
-		ScalePoint(vertices.points[i], s_coeff);
+	ScalePoints(vertices.points, vertices.n_vertices, s_coeff);
 }
 
 /**

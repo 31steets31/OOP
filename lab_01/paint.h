@@ -4,7 +4,7 @@
 #include <QGraphicsScene>
 
 #include "model.h"
-#include "point.h"
+#include "points.h"
 #include "vertices.h"
 #include "faces.h"
 

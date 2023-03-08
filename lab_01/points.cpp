@@ -13,6 +13,32 @@ static inline double ToRadians(const double& angle)
 }
 
 /**
+ * \brief Init transfer values
+ * 
+ * \param values
+ * \param data
+ */
+void InitTransferValues(transfer_t& values, const rotate_t& data)
+{
+	values.dx = data.x_center;
+	values.dy = data.y_center;
+	values.dz = data.z_center;
+}
+
+/**
+ * \brief Init negative transfer values
+ *
+ * \param values
+ * \param data
+ */
+void InitNegTransferValues(transfer_t& values, const rotate_t& data)
+{
+	values.dx = -data.x_center;
+	values.dy = -data.y_center;
+	values.dz = -data.z_center;
+}
+
+/**
  * \brief Project point
  *
  * \param a
@@ -124,15 +150,15 @@ void RotatePointXY(point_t& point, const double& angle)
  */
 void RotatePoints(point_t* points, const int& points_count, const rotate_t& r_angles)
 {
-	transfer_t d_point;
+	transfer_t d_point_plus;
+	transfer_t d_point_minus;
+
+	InitTransferValues(d_point_plus, r_angles);
+	InitNegTransferValues(d_point_plus, r_angles);
 
 	for (int i = 0; i < points_count; ++i)
 	{
-		d_point.dx = r_angles.x_center;
-		d_point.dy = r_angles.y_center;
-		d_point.dz = r_angles.z_center;
-
-		TransferPoint(points[i], d_point);
+		TransferPoint(points[i], d_point_plus);
 
 		// Rotate around center point r_angles.x_center, r_angles.y_center, r_angles.z_center
 		RotatePointYZ(points[i], r_angles.x_angle);
@@ -141,11 +167,7 @@ void RotatePoints(point_t* points, const int& points_count, const rotate_t& r_an
 
 		RotatePointXY(points[i], r_angles.z_angle);
 
-		d_point.dx = -r_angles.x_center;
-		d_point.dy = -r_angles.y_center;
-		d_point.dz = -r_angles.z_center;
-
-		TransferPoint(points[i], d_point);
+		TransferPoint(points[i], d_point_minus);
 	}
 }
 

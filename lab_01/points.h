@@ -24,6 +24,20 @@ struct point_t
  */
 static inline double ToRadians(const double& angle);
 /**
+ * \brief Init transfer values
+ *
+ * \param values
+ * \param data
+ */
+void InitTransferValues(transfer_t& values, const rotate_t& data);
+/**
+ * \brief Init negative transfer values
+ *
+ * \param values
+ * \param data
+ */
+void InitNegTransferValues(transfer_t& values, const rotate_t& data);
+/**
  * \brief Project point
  *
  * \param a
